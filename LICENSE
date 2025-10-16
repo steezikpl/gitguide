@@ -1,0 +1,138 @@
+MIT License (Educational Use)
+
+Copyright (c) 2025 steez
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+## 📋 Warunki użytkowania (PL)
+
+### ✅ Dozwolone:
+
+- **Użycie edukacyjne** - szkoły, uczelnie, kursy, samodzielna nauka
+- **Kopiowanie i dystrybucja** - wolne udostępnianie innym
+- **Modyfikacja** - dostosowywanie do własnych potrzeb
+- **Publikacja** - hosting na własnych serwerach/GitHub Pages
+- **Komercyjne szkolenia** - po zachowaniu informacji o autorze
+
+### ⚠️ Wymagane:
+
+1. **Zachowanie informacji o autorze**
+   - Sekcja "Autor: steez" musi pozostać na stronie
+   - Link GitHub (github.com/steezikpl) nie może być usunięty
+   - Informacja o licencji MIT musi być zachowana
+
+2. **Informacja o zmianach**
+   - Jeśli modyfikujesz projekt, zaznacz to w dokumentacji
+   - Możesz dodać swoje imię jako "Modified by: [Your Name]"
+
+### ❌ Zabronione:
+
+- **Sprzedaż jako produkt** - nie możesz sprzedawać tego projektu jako gotowego produktu
+- **Usunięcie atrypcji** - nie możesz usuwać informacji o oryginalnym autorze
+- **Wprowadzanie w błąd** - nie możesz podawać się za oryginalnego autora
+
+---
+
+## 🎓 Użycie edukacyjne
+
+Ten projekt został stworzony z myślą o edukacji. Możesz:
+
+- 📚 Używać na lekcjach programowania
+- 👨‍🎓 Pokazywać studentom jako przykład dobrego kodu
+- 📖 Wykorzystywać jako materiał do nauki Git/Vim
+- 🎯 Modyfikować dla swoich kursów/workshopów
+- 🌐 Hostować na własnej domenie dla swoich uczniów
+
+---
+
+## 💼 Użycie komercyjne
+
+Jeśli chcesz użyć tego projektu komercyjnie (np. płatne kursy, szkolenia firmowe):
+
+1. ✅ Zachowaj informacje o autorze w widocznym miejscu
+2. ✅ Dodaj informację: "Based on GIT GUIDE by steez"
+3. ✅ Link do oryginalnego repo (mile widziany)
+4. ⚠️ Nie sprzedawaj jako "swojego produktu"
+
+---
+
+## 🤝 Wkład w projekt
+
+Wkład w projekt jest mile widziany! Jeśli:
+
+- Znajdziesz błąd - otwórz Issue
+- Masz pomysł na ulepszenie - otwórz Pull Request
+- Chcesz dodać tłumaczenie - będziemy wdzięczni!
+
+---
+
+## 📞 Kontakt
+
+Pytania dotyczące licencji? Skontaktuj się:
+
+- GitHub: [@steezikpl](https://github.com/steezikpl)
+- Issues: [github.com/[repo]/issues](https://github.com/steezikpl/git-guide/issues)
+
+---
+
+## 🌟 Podziękowania
+
+Jeśli ten projekt pomógł Ci w nauce, rozważ:
+
+- ⭐ Gwiazdkę na GitHub
+- 📢 Udostępnienie projektu innym
+- 💬 Feedback w Issues
+
+---
+
+**Dziękuję za korzystanie z GIT GUIDE!**
+
+Made with ❤️ by steez | © 2025
+   - Zachęcamy do udostępniania ulepszeń społeczności
+
+## Zastrzeżenia
+
+OPROGRAMOWANIE JEST DOSTARCZANE "TAKIM, JAKIE JEST", BEZ JAKIEJKOLWIEK GWARANCJI, WYRAŹNEJ LUB DOROZUMIANEJ, W TYM MIĘDZY INNYMI GWARANCJI PRZYDATNOŚCI HANDLOWEJ, PRZYDATNOŚCI DO OKREŚLONEGO CELU I NIENARUSZANIA PRAW.
+
+W ŻADNYM WYPADKU AUTORZY ANI POSIADACZE PRAW AUTORSKICH NIE PONOSZĄ ODPOWIEDZIALNOŚCI ZA JAKIEKOLWIEK ROSZCZENIA, SZKODY LUB INNE ZOBOWIĄZANIA, CZY TO W DRODZE DZIAŁANIA UMOWNEGO, DELIKTU, CZY W INNY SPOSÓB, WYNIKAJĄCE Z OPROGRAMOWANIA LUB POWIĄZANE Z OPROGRAMOWANIEM, UŻYTKOWANIEM OPROGRAMOWANIA LUB INNYMI CZYNNOŚCIAMI ZWIĄZANYMI Z OPROGRAMOWANIEM.
+
+---
+
+## English Version
+
+### Permission
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software for **educational purposes** without restriction, including without limitation the rights to use, copy, modify, merge, publish, and distribute copies of the Software, subject to the following conditions:
+
+1. The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+2. The author attribution (steez) must remain visible on the website.
+3. The Software may not be sold as a commercial product.
+
+### Disclaimer
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+---
+
+**Author:** steez  
+**GitHub:** https://github.com/steezikpl  
+**Date:** October 2025  
+**Project:** Git CLI + Vim Interactive Guide
