@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src https://fonts.googleapis.com https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none'; frame-ancestors 'none';">
+    <meta name="description" content="Interaktywny przewodnik Git CLI z edytorem Vim – edukacyjny tutorial do Debian Linux">
+    <title>GIT GUIDE - Interaktywny Przewodnik</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Poppins:wght@700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body data-theme="light">
+    
+    <!-- Pasek postępu -->
+    <div id="progressBar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+
+    <!-- Header z przełącznikami motywów -->
+    <header class="main-header">
+        <div class="header-content">
+            <h1 class="header-title">
+                <span class="git-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M21.62 11.108l-8.731-8.729a1.292 1.292 0 0 0-1.823 0L9.257 4.19l2.299 2.3a1.532 1.532 0 0 1 1.939 1.95l2.214 2.217a1.53 1.53 0 0 1 1.583 2.531c-.599.6-1.566.6-2.166 0a1.536 1.536 0 0 1-.337-1.662l-2.074-2.063V14.9c.146.071.284.166.415.288.6.6.6 1.566 0 2.166-.599.6-1.565.6-2.165 0a1.536 1.536 0 0 1 0-2.165 1.54 1.54 0 0 1 .415-.233V9.479a1.536 1.536 0 0 1-.83-2.014l-2.26-2.271-5.987 5.982c-.5.504-.5 1.32 0 1.824l8.731 8.729a1.286 1.286 0 0 0 1.821 0l8.69-8.689a1.284 1.284 0 0 0 .003-1.831z"/>
+                    </svg>
+                </span>
+                <span class="title-text">
+                    <span class="title-git">GIT</span>
+                    <span class="title-guide">GUIDE</span>
+                </span>
+            </h1>
+            <div class="theme-controls">
+                <button class="theme-toggle-btn" id="themeToggle" aria-label="Przełącz tryb jasny/ciemny">
+                    <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg class="moon-icon hidden" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
+                <div class="color-picker">
+                    <button class="color-picker-btn" id="colorPickerBtn" aria-label="Wybierz kolor akcentu" title="Kolory">
+                        🎨
+                    </button>
+                    <div class="color-palette hidden" id="colorPalette">
+                        <button class="color-option" data-color="green" style="background: #2e7d32" title="Zielony"></button>
+                        <button class="color-option" data-color="blue" style="background: #1976d2" title="Niebieski"></button>
+                        <button class="color-option" data-color="purple" style="background: #7b1fa2" title="Fioletowy"></button>
+                        <button class="color-option" data-color="red" style="background: #d32f2f" title="Czerwony"></button>
+                        <button class="color-option" data-color="orange" style="background: #f57c00" title="Pomarańczowy"></button>
+                        <button class="color-option" data-color="pink" style="background: #c2185b" title="Różowy"></button>
+                        <button class="color-option" data-color="teal" style="background: #00796b" title="Turkusowy"></button>
+                        <button class="color-option" data-color="indigo" style="background: #303f9f" title="Indygo"></button>
+                        <button class="color-option" data-color="amber" style="background: #ffa000" title="Bursztynowy"></button>
+                        <button class="color-option" data-color="cyan" style="background: #0097a7" title="Cyjan"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hamburger menu (mobile) -->
+    <button class="hamburger" id="hamburger" aria-label="Menu nawigacji" aria-expanded="false">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path class="hamburger-line-top" d="M3 12h18"></path>
+            <path class="hamburger-line-middle" d="M3 6h18"></path>
+            <path class="hamburger-line-bottom" d="M3 18h18"></path>
+        </svg>
+    </button>
+
+    <!-- Sidebar nawigacji -->
+    <aside class="sidebar" id="sidebar">
+        <nav class="sidebar-nav">
+            <h2 class="sidebar-title">Sekcje</h2>
+            <ul class="nav-list">
+                <li><a href="#section-init" class="nav-link active" data-section="init">
+                    <span class="nav-icon">📁</span>
+                    <span class="nav-text">Inicjalizacja projektu</span>
+                </a></li>
+                <li><a href="#section-local" class="nav-link" data-section="local">
+                    <span class="nav-icon">✏️</span>
+                    <span class="nav-text">Lokalna edycja</span>
+                </a></li>
+                <li><a href="#section-remote" class="nav-link" data-section="remote">
+                    <span class="nav-icon">🌐</span>
+                    <span class="nav-text">Repozytorium zdalne</span>
+                </a></li>
+                <li><a href="#section-browse" class="nav-link" data-section="browse">
+                    <span class="nav-icon">🔍</span>
+                    <span class="nav-text">Przeglądanie treści</span>
+                </a></li>
+                <li><a href="#section-publish" class="nav-link" data-section="publish">
+                    <span class="nav-icon">🚀</span>
+                    <span class="nav-text">Publikacja gałęzi i plików</span>
+                </a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Główna treść -->
+    <main class="main-content">
+        
+        <!-- Sekcja 1: Inicjalizacja (zwijana) -->
+        <section id="section-init" class="content-section">
+            <h2 class="section-title">
+                <span class="section-icon">📁</span>
+                Inicjalizacja projektu
+            </h2>
+            
+            <div class="init-info-box">
+                <div class="info-icon">ℹ️</div>
+                <div class="info-content">
+                    <h3>O inicjalizacji</h3>
+                    <p>Ta sekcja zawiera <strong>jednorazowe komendy konfiguracyjne</strong>, które tworzą strukturę katalogów i inicjalizują repozytorium Git. Wykonuje się je <strong>tylko raz</strong> na początku projektu.</p>
+                    <ul class="info-list">
+                        <li>Tworzenie katalogów roboczych</li>
+                        <li>Inicjalizacja repozytorium Git</li>
+                        <li>Przygotowanie środowiska pracy</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <button class="toggle-init-btn" id="toggleInit" aria-expanded="false">
+                <svg class="toggle-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+                <span class="btn-text">Pokaż komendy inicjalizacji</span>
+            </button>
+            <div class="init-commands hidden" id="initCommands">
+                
+                <!-- Komenda: mkdir work -->
+                <div class="command-card">
+                    <div class="command-header">
+                        <code class="command-text">mkdir work</code>
+                        <button class="copy-btn" onclick="copyToClipboard('mkdir work', this)" aria-label="Kopiuj komendę" title="Kopiuj">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Komenda: cd work -->
+                <div class="command-card">
+                    <div class="command-header">
+                        <code class="command-text">cd work</code>
+                        <button class="copy-btn" onclick="copyToClipboard('cd work', this)" aria-label="Kopiuj komendę" title="Kopiuj">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Komenda: mkdir p6.10 -->
+                <div class="command-card">
+                    <div class="command-header">
+                        <code class="command-text">mkdir p6.10</code>
+                        <button class="copy-btn" onclick="copyToClipboard('mkdir p6.10', this)" aria-label="Kopiuj komendę" title="Kopiuj">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Komenda: cd p6.10 -->
+                <div class="command-card">
+                    <div class="command-header">
+                        <code class="command-text">cd p6.10</code>
+                        <button class="copy-btn" onclick="copyToClipboard('cd p6.10', this)" aria-label="Kopiuj komendę" title="Kopiuj">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Komenda: git init -->
+                <div class="command-card">
+                    <div class="command-header">
+                        <code class="command-text">git init</code>
+                        <div class="command-actions">
+                            <a href="https://git-scm.com/docs/git-init" target="_blank" rel="noopener noreferrer" class="docs-link" aria-label="Dokumentacja git init" title="Dokumentacja">
+                                📚
+                            </a>
+                            <button class="copy-btn" onclick="copyToClipboard('git init', this)" aria-label="Kopiuj komendę" title="Kopiuj">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Sekcja 2: Lokalna edycja -->
+        <section id="section-local" class="content-section">
+            <h2 class="section-title">
+                <span class="section-icon">✏️</span>
+                Lokalna edycja
+            </h2>
+            <div class="commands-container">
+                
+                <!-- vim t1.txt -->
+                <div class="command-card">
+                    <div class="command-header">
+                        <code class="command-text">vim t1.txt</code>
+                        <div class="command-actions">
+                            <button class="copy-btn" onclick="copyToClipboard('vim t1.txt', this)" aria-label="Kopiuj komendę" title="Kopiuj">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <button class="command-toggle" aria-expanded="false">
+                        <span>Pokaż szczegóły</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="command-details hidden">
+                        <div class="command-description">
+                            <h4>Opis:</h4>
+                            <p>Otwiera edytor Vim w celu utworzenia lub edycji pliku <code>t1.txt</code>. Vim to potężny edytor tekstowy działający w terminalu.</p>
+                        </div>
+                        <div class="command-output">
+                            <h4>Wynik działania:</h4>
+                            <pre><code>(Vim otwiera się w trybie normalnym - brak outputu w terminalu)</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Sekcja 3: Repozytorium zdalne -->
+        <section id="section-remote" class="content-section">
+            <h2 class="section-title">
+                <span class="section-icon">🌐</span>
+                Konfiguracja repozytorium zdalnego
+            </h2>
+            <div class="commands-container">
+                
+                <!-- git remote add -->
+                <div class="command-card">
+                    <div class="command-header">
+                        <code class="command-text">git remote add r http://t1:efdcee376e608dae700d1702877edcfa4617678f@zslslubice.pl:4001/z2025/p6.10</code>
+                        <div class="command-actions">
+                            <a href="https://git-scm.com/docs/git-remote" target="_blank" rel="noopener noreferrer" class="docs-link" aria-label="Dokumentacja git remote" title="Dokumentacja">
+                                📚
+                            </a>
+                            <button class="copy-btn" onclick="copyToClipboard('git remote add r http://t1:efdcee376e608dae700d1702877edcfa4617678f@zslslubice.pl:4001/z2025/p6.10', this)" aria-label="Kopiuj komendę" title="Kopiuj">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <button class="command-toggle" aria-expanded="false">
+                        <span>Pokaż szczegóły</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="command-details hidden">
+                        <div class="command-description">
+                            <h4>Opis:</h4>
+                            <p>Dodaje zdalne repozytorium pod aliasem <code>r</code>. URL zawiera uwierzytelnienie (użytkownik <code>t1</code> + token dostępu). Token jest nieaktywny i służy wyłącznie celom edukacyjnym.</p>
+                            <p><strong>Uwaga:</strong> W produkcji używaj SSH lub Personal Access Tokens bez wklejania ich bezpośrednio w historię komend.</p>
+                        </div>
+                        <div class="command-output">
+                            <h4>Wynik działania:</h4>
+                            <pre><code>(Brak outputu - repozytorium zdalne zostało dodane)</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- git fetch -->
+                <div class="command-card">
+                    <div class="command-header">
+                        <code class="command-text">git fetch r mpabi</code>
+                        <div class="command-actions">
+                            <a href="https://git-scm.com/docs/git-fetch" target="_blank" rel="noopener noreferrer" class="docs-link" aria-label="Dokumentacja git fetch" title="Dokumentacja">
+                                📚
+                            </a>
+                            <button class="copy-btn" onclick="copyToClipboard('git fetch r mpabi', this)" aria-label="Kopiuj komendę" title="Kopiuj">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <button class="command-toggle" aria-expanded="false">
+                        <span>Pokaż szczegóły</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="command-details hidden">
+                        <div class="command-description">
+                            <h4>Opis:</h4>
+                            <p>Pobiera gałąź <code>mpabi</code> ze zdalnego repozytorium <code>r</code>. Fetch pobiera zmiany bez automatycznego mergowania ich do lokalnej gałęzi.</p>
+                        </div>
+                        <div class="command-output">
+                            <h4>Przykładowy wynik:</h4>
+                            <pre><code>From http://zslslubice.pl:4001/z2025/p6.10
+ * branch            mpabi      -> FETCH_HEAD
+ * [new branch]      mpabi      -> r/mpabi</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- git switch -->
+                <div class="command-card">
+                    <div class="command-header">
+                        <code class="command-text">git switch mpabi</code>
+                        <div class="command-actions">
+                            <a href="https://git-scm.com/docs/git-switch" target="_blank" rel="noopener noreferrer" class="docs-link" aria-label="Dokumentacja git switch" title="Dokumentacja">
+                                📚
+                            </a>
+                            <button class="copy-btn" onclick="copyToClipboard('git switch mpabi', this)" aria-label="Kopiuj komendę" title="Kopiuj">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <button class="command-toggle" aria-expanded="false">
+                        <span>Pokaż szczegóły</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="command-details hidden">
+                        <div class="command-description">
+                            <h4>Opis:</h4>
+                            <p>Przełącza się na gałąź <code>mpabi</code>. Nowsza alternatywa dla <code>git checkout</code>, bardziej intuicyjna i bezpieczna.</p>
+                        </div>
+                        <div class="command-output">
+                            <h4>Przykładowy wynik:</h4>
+                            <pre><code>Switched to branch 'mpabi'
+Your branch is up to date with 'r/mpabi'.</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Sekcja 4: Przeglądanie -->
+        <section id="section-browse" class="content-section">
+            <h2 class="section-title">
+                <span class="section-icon">🔍</span>
+                Przeglądanie i edycja treści
+            </h2>
+            <div class="commands-container">
+                
+                <!-- ls -->
+                <div class="command-card">
+                    <div class="command-header">
+                        <code class="command-text">ls</code>
+                        <button class="copy-btn" onclick="copyToClipboard('ls', this)" aria-label="Kopiuj komendę" title="Kopiuj">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <button class="command-toggle" aria-expanded="false">
+                        <span>Pokaż szczegóły</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="command-details hidden">
+                        <div class="command-description">
+                            <h4>Opis:</h4>
+                            <p>Wyświetla listę plików i katalogów w bieżącym katalogu. Podstawowa komenda systemu Linux do nawigacji po strukturze plików.</p>
+                        </div>
+                        <div class="command-output">
+                            <h4>Przykładowy wynik:</h4>
+                            <pre><code>t1.txt  z1/</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- cd z1 -->
+                <div class="command-card">
+                    <div class="command-header">
+                        <code class="command-text">cd z1</code>
+                        <button class="copy-btn" onclick="copyToClipboard('cd z1', this)" aria-label="Kopiuj komendę" title="Kopiuj">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <button class="command-toggle" aria-expanded="false">
+                        <span>Pokaż szczegóły</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="command-details hidden">
+                        <div class="command-description">
+                            <h4>Opis:</h4>
+                            <p>Przechodzi do katalogu <code>z1</code>. Zmienia bieżący katalog roboczy.</p>
+                        </div>
+                        <div class="command-output">
+                            <h4>Wynik działania:</h4>
+                            <pre><code>(Brak outputu - katalog został zmieniony)</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- cat z1.txt -->
+                <div class="command-card">
+                    <div class="command-header">
+                        <code class="command-text">cat z1.txt</code>
+                        <button class="copy-btn" onclick="copyToClipboard('cat z1.txt', this)" aria-label="Kopiuj komendę" title="Kopiuj">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <button class="command-toggle" aria-expanded="false">
+                        <span>Pokaż szczegóły</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="command-details hidden">
+                        <div class="command-description">
+                            <h4>Opis:</h4>
+                            <p>Wyświetla zawartość pliku <code>z1.txt</code> w terminalu. Komenda <code>cat</code> (concatenate) służy do szybkiego podglądu zawartości plików tekstowych.</p>
+                        </div>
+                        <div class="command-output">
+                            <h4>Przykładowy wynik:</h4>
+                            <pre><code>(Zawartość pliku z1.txt zostanie wyświetlona w terminalu)</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- vim z1r.txt -->
+                <div class="command-card">
+                    <div class="command-header">
+                        <code class="command-text">vim z1r.txt</code>
+                        <div class="command-actions">
+                            <button class="copy-btn" onclick="copyToClipboard('vim z1r.txt', this)" aria-label="Kopiuj komendę" title="Kopiuj">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <button class="command-toggle" aria-expanded="false">
+                        <span>Pokaż szczegóły</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="command-details hidden">
+                        <div class="command-description">
+                            <h4>Opis:</h4>
+                            <p>Otwiera edytor Vim w celu utworzenia lub edycji pliku <code>z1r.txt</code> w katalogu <code>z1</code>. To plik z rozwiązaniem zadania.</p>
+                        </div>
+                        <div class="command-output">
+                            <h4>Wynik działania:</h4>
+                            <pre><code>(Vim otwiera się w trybie normalnym - brak outputu w terminalu)</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- cd ../ -->
+                <div class="command-card">
+                    <div class="command-header">
+                        <code class="command-text">cd ../</code>
+                        <button class="copy-btn" onclick="copyToClipboard('cd ../', this)" aria-label="Kopiuj komendę" title="Kopiuj">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <button class="command-toggle" aria-expanded="false">
+                        <span>Pokaż szczegóły</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="command-details hidden">
+                        <div class="command-description">
+                            <h4>Opis:</h4>
+                            <p>Wraca o jeden katalog wyżej w hierarchii. Notacja <code>../</code> oznacza katalog nadrzędny (parent directory).</p>
+                        </div>
+                        <div class="command-output">
+                            <h4>Wynik działania:</h4>
+                            <pre><code>(Brak outputu - wrócono do katalogu p6.10)</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Sekcja 5: Publikacja -->
+        <section id="section-publish" class="content-section">
+            <h2 class="section-title">
+                <span class="section-icon">🚀</span>
+                Publikacja gałęzi i plików
+            </h2>
+            <div class="commands-container">
+                
+                <!-- git checkout -b adamm -->
+                <div class="command-card">
+                    <div class="command-header">
+                        <code class="command-text">git checkout -b adamm</code>
+                        <div class="command-actions">
+                            <a href="https://git-scm.com/docs/git-checkout" target="_blank" rel="noopener noreferrer" class="docs-link" aria-label="Dokumentacja git checkout" title="Dokumentacja">
+                                📚
+                            </a>
+                            <button class="copy-btn" onclick="copyToClipboard('git checkout -b adamm', this)" aria-label="Kopiuj komendę" title="Kopiuj">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <button class="command-toggle" aria-expanded="false">
+                        <span>Pokaż szczegóły</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="command-details hidden">
+                        <div class="command-description">
+                            <h4>Opis:</h4>
+                            <p>Tworzy nową gałąź o nazwie <code>adamm</code> i automatycznie się na nią przełącza. Flaga <code>-b</code> oznacza "branch" - tworzy nową gałąź.</p>
+                            <p><strong>Nowszy sposób:</strong> <code>git switch -c adamm</code> (bardziej intuicyjny)</p>
+                        </div>
+                        <div class="command-output">
+                            <h4>Przykładowy wynik:</h4>
+                            <pre><code>Switched to a new branch 'adamm'</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- git add z1 -->
+                <div class="command-card">
+                    <div class="command-header">
+                        <code class="command-text">git add z1</code>
+                        <div class="command-actions">
+                            <a href="https://git-scm.com/docs/git-add" target="_blank" rel="noopener noreferrer" class="docs-link" aria-label="Dokumentacja git add" title="Dokumentacja">
+                                📚
+                            </a>
+                            <button class="copy-btn" onclick="copyToClipboard('git add z1', this)" aria-label="Kopiuj komendę" title="Kopiuj">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <button class="command-toggle" aria-expanded="false">
+                        <span>Pokaż szczegóły</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="command-details hidden">
+                        <div class="command-description">
+                            <h4>Opis:</h4>
+                            <p>Dodaje katalog <code>z1</code> (wraz z całą zawartością) do poczekalni (staging area). Przygotowuje zmiany do zatwierdzenia (commit).</p>
+                            <p><strong>Inne opcje:</strong> <code>git add .</code> (wszystkie zmiany), <code>git add -A</code> (wszystko + usunięcia)</p>
+                        </div>
+                        <div class="command-output">
+                            <h4>Wynik działania:</h4>
+                            <pre><code>(Brak outputu - pliki zostały dodane do staging area)</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- git commit -->
+                <div class="command-card">
+                    <div class="command-header">
+                        <code class="command-text">git commit</code>
+                        <div class="command-actions">
+                            <a href="https://git-scm.com/docs/git-commit" target="_blank" rel="noopener noreferrer" class="docs-link" aria-label="Dokumentacja git commit" title="Dokumentacja">
+                                📚
+                            </a>
+                            <button class="copy-btn" onclick="copyToClipboard('git commit', this)" aria-label="Kopiuj komendę" title="Kopiuj">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <button class="command-toggle" aria-expanded="false">
+                        <span>Pokaż szczegóły</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="command-details hidden">
+                        <div class="command-description">
+                            <h4>Opis:</h4>
+                            <p>Zatwierdza zmiany z poczekalni (staging area) do repozytorium. Otwiera edytor Vim do wpisania wiadomości commit.</p>
+                            <p><strong>Szybsza opcja:</strong> <code>git commit -m "Twoja wiadomość"</code> (bez otwierania Vima)</p>
+                            <p><strong>W Vimie:</strong> Wpisz wiadomość commit, naciśnij <kbd>Esc</kbd>, wpisz <code>:wq</code> i zatwierdź <kbd>Enter</kbd>.</p>
+                        </div>
+                        <div class="command-output">
+                            <h4>Przykładowy wynik:</h4>
+                            <pre><code>[adamm f7a8b2c] Dodano rozwiązanie z1r.txt
+ 1 file changed, 15 insertions(+)
+ create mode 100644 z1/z1r.txt</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- git push r adamm -->
+                <div class="command-card">
+                    <div class="command-header">
+                        <code class="command-text">git push r adamm</code>
+                        <div class="command-actions">
+                            <a href="https://git-scm.com/docs/git-push" target="_blank" rel="noopener noreferrer" class="docs-link" aria-label="Dokumentacja git push" title="Dokumentacja">
+                                📚
+                            </a>
+                            <button class="copy-btn" onclick="copyToClipboard('git push r adamm', this)" aria-label="Kopiuj komendę" title="Kopiuj">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <button class="command-toggle" aria-expanded="false">
+                        <span>Pokaż szczegóły</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="command-details hidden">
+                        <div class="command-description">
+                            <h4>Opis:</h4>
+                            <p>Wysyła (publikuje) gałąź <code>adamm</code> do zdalnego repozytorium <code>r</code>. Dzieli się swoją pracą z zespołem lub nauczycielem.</p>
+                            <p><strong>Pierwsze push:</strong> Użyj <code>git push -u r adamm</code> aby ustawić upstream tracking (późniejsze push będą prostsze)</p>
+                        </div>
+                        <div class="command-output">
+                            <h4>Przykładowy wynik:</h4>
+                            <pre><code>Enumerating objects: 5, done.
+Counting objects: 100% (5/5), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (4/4), 456 bytes | 456.00 KiB/s, done.
+Total 4 (delta 1), reused 0 (delta 0), pack-reused 0
+To http://zslslubice.pl:4001/z2025/p6.10
+ * [new branch]      adamm -> adamm</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Autor -->
+        <div class="author-section">
+            <p class="author-text">
+                Autor: <strong>steez</strong> 
+                <a href="https://github.com/steezikpl" target="_blank" rel="noopener noreferrer" class="author-link" aria-label="Profil GitHub autora steez">
+                    <svg class="github-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                </a>
+            </p>
+        </div>
+
+    </main>
+
+    <!-- Przycisk do góry -->
+    <button class="scroll-to-top" id="scrollToTop" aria-label="Przewiń do góry">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+    </button>
+
+    <!-- Modal z poradnikiem Vim -->
+    <div class="modal-overlay" id="vimModal" role="dialog" aria-modal="true" aria-labelledby="vimModalTitle">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose" aria-label="Zamknij poradnik">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            <h3 id="vimModalTitle" class="modal-title">📖 Podstawy edytora Vim</h3>
+            <div class="vim-guide">
+                <div class="vim-command">
+                    <kbd>Esc</kbd>
+                    <span class="vim-desc">Przejście do trybu normalnego</span>
+                </div>
+                <div class="vim-command">
+                    <kbd>i</kbd>
+                    <span class="vim-desc">Tryb insert (edytowanie tekstu)</span>
+                </div>
+                <div class="vim-command">
+                    <kbd>:q</kbd>
+                    <span class="vim-desc">Wyjście (jeśli nie ma zmian)</span>
+                </div>
+                <div class="vim-command">
+                    <kbd>:q!</kbd>
+                    <span class="vim-desc">Wyjście bez zapisu zmian</span>
+                </div>
+                <div class="vim-command">
+                    <kbd>:wq</kbd> lub <kbd>:x</kbd>
+                    <span class="vim-desc">Zapis i wyjście</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tooltip dla kopiowania -->
+    <div class="copy-tooltip" id="copyTooltip" role="status" aria-live="polite">Skopiowano!</div>
+
+    <script src="script.js"></script>
+</body>
+</html>
